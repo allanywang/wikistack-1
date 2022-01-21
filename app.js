@@ -2,7 +2,9 @@ const express = require('express');
 const sequelize = require('sequelize');
 const morgan = require('morgan');
 const layout = require('./views/layout');
-const { db, Page, User } = require('./models');
+const {db} = require('./models');
+const wiki = require('./routes/wiki');
+// const users = require('./routes/users');
 
 
 const app = express();
@@ -11,9 +13,11 @@ const PORT = 1337;
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
+// app.use('/users', users)
+app.use('/wiki', wiki)
 
-app.get('/', (req, res, next) => {
-    res.send(layout(''));
+app.get('/', (req, res) => {
+    res.redirect('/wiki');
 })
 
 let sync = async function(){
